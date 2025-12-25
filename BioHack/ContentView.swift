@@ -1,61 +1,33 @@
-//
-//  ContentView.swift
-//  BioHack
-//
-//  Created by ABHINAV ANAND  on 23/12/25.
-//
-
 import SwiftUI
-import SwiftData
 
 struct ContentView: View {
-    @Environment(\.modelContext) private var modelContext
-    @Query private var items: [Item]
-
+    
+    // Customizing the Tab Bar appearance to be Dark Mode
+    init() {
+        UITabBar.appearance().barTintColor = .black
+        UITabBar.appearance().backgroundColor = .black
+        UITabBar.appearance().unselectedItemTintColor = UIColor.gray
+    }
+    
     var body: some View {
-        NavigationSplitView {
-            List {
-                ForEach(items) { item in
-                    NavigationLink {
-                        Text("Item at \(item.timestamp, format: Date.FormatStyle(date: .numeric, time: .standard))")
-                    } label: {
-                        Text(item.timestamp, format: Date.FormatStyle(date: .numeric, time: .standard))
-                    }
+        TabView {
+            DashboardView()
+                .tabItem {
+                    Label("Summary", systemImage: "chart.bar.fill")
                 }
-                .onDelete(perform: deleteItems)
-            }
-            .toolbar {
-                ToolbarItem(placement: .navigationBarTrailing) {
-                    EditButton()
+            
+            // Scanner acts as "Fitness+" tab
+            ScannerScreen()
+                .tabItem {
+                    Label("Scan", systemImage: "barcode.viewfinder")
                 }
-                ToolbarItem {
-                    Button(action: addItem) {
-                        Label("Add Item", systemImage: "plus")
-                    }
+            
+            HistoryView()
+                .tabItem {
+                    Label("Sharing", systemImage: "person.2.fill") // Using "Sharing" icon to mimic Apple Fitness
                 }
-            }
-        } detail: {
-            Text("Select an item")
         }
+        .accentColor(Color.appleGreen) // The neon green active color
+        .preferredColorScheme(.dark)
     }
-
-    private func addItem() {
-        withAnimation {
-            let newItem = Item(timestamp: Date())
-            modelContext.insert(newItem)
-        }
-    }
-
-    private func deleteItems(offsets: IndexSet) {
-        withAnimation {
-            for index in offsets {
-                modelContext.delete(items[index])
-            }
-        }
-    }
-}
-
-#Preview {
-    ContentView()
-        .modelContainer(for: Item.self, inMemory: true)
 }

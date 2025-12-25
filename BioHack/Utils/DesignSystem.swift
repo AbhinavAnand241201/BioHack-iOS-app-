@@ -1,0 +1,54 @@
+import SwiftUI
+
+// MARK: - APPLE FITNESS AESTHETIC
+extension Color {
+    // Backgrounds
+    static let fitnessBlack = Color.black
+    static let fitnessCard = Color(UIColor.systemGray6) // The standard Dark Mode card color
+    
+    // The Iconic Ring Colors
+    static let applePink = Color(hex: "FA114F")  // Move Ring
+    static let appleGreen = Color(hex: "A4FF00") // Exercise Ring
+    static let appleCyan = Color(hex: "00F5EA")  // Stand Ring
+    
+    // Helper for Hex
+    init(hex: String) {
+        let hex = hex.trimmingCharacters(in: CharacterSet.alphanumerics.inverted)
+        var int: UInt64 = 0
+        Scanner(string: hex).scanHexInt64(&int)
+        let a, r, g, b: UInt64
+        switch hex.count {
+        case 3: (a, r, g, b) = (255, (int >> 8) * 17, (int >> 4 & 0xF) * 17, (int & 0xF) * 17)
+        case 6: (a, r, g, b) = (255, int >> 16, int >> 8 & 0xFF, int & 0xFF)
+        case 8: (a, r, g, b) = (int >> 24, int >> 16 & 0xFF, int >> 8 & 0xFF, int & 0xFF)
+        default: (a, r, g, b) = (1, 1, 1, 0)
+        }
+        self.init(.sRGB, red: Double(r) / 255, green: Double(g) / 255, blue: Double(b) / 255, opacity: Double(a) / 255)
+    }
+}
+
+// MARK: - TYPOGRAPHY MODIFIERS
+// Apple uses "Rounded" font for data/numbers in Fitness
+struct FitnessFont: ViewModifier {
+    var size: CGFloat
+    var weight: Font.Weight
+    
+    func body(content: Content) -> some View {
+        content
+            .font(.system(size: size, weight: weight, design: .rounded))
+    }
+}
+
+extension View {
+    func fitnessFont(size: CGFloat, weight: Font.Weight = .regular) -> some View {
+        modifier(FitnessFont(size: size, weight: weight))
+    }
+    
+    // Standard Card Style
+    func fitnessCardStyle() -> some View {
+        self
+            .padding()
+            .background(Color(UIColor.secondarySystemBackground)) // Standard iOS Dark Gray
+            .cornerRadius(16)
+    }
+}
