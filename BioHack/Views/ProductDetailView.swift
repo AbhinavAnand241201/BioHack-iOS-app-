@@ -4,19 +4,17 @@ import SwiftData
 struct ProductDetailView: View {
     @ObservedObject var viewModel: ProductViewModel
     
-    // Support for history items (static display)
     var staticProduct: Product?
     
     var body: some View {
         ZStack {
             Color.black.ignoresSafeArea()
-            // Prefer static product (History) -> then ViewModel product (Live Scan)
             if let product = staticProduct ?? viewModel.product {
                 SuccessView(product: product)
             } else if viewModel.isLoading {
                 ProgressView().tint(Color.appleGreen)
             } else if let error = viewModel.errorMessage {
-                 // FIX 4: Basic Error Handling UI
+
                 VStack {
                     Image(systemName: "exclamationmark.triangle")
                         .font(.largeTitle)
@@ -30,13 +28,13 @@ struct ProductDetailView: View {
     }
 }
 
-// THE NEW SUCCESS VIEW
+
 struct SuccessView: View {
     let product: Product
     @Environment(\.modelContext) var context
     @Environment(\.dismiss) var dismiss
     
-    // Generate the journey once
+
     var journey: BioBrain.HealthJourney {
         BioBrain.generateJourney(for: product)
     }
@@ -45,7 +43,7 @@ struct SuccessView: View {
         ScrollView {
             VStack(spacing: 24) {
                 
-                // 1. HERO SECTION (Same as before)
+
                 HStack(spacing: 20) {
                     ZStack {
                         Circle()
@@ -76,11 +74,11 @@ struct SuccessView: View {
                 
                 Divider().background(Color.gray.opacity(0.3))
                 
-                // --- NEW FEATURE: GLUCOSE PREDICTION ---
+
                 GlucoseChart(product: product)
                     .padding(.horizontal)
                 
-                // 2. THE NEW "DETOX PROTOCOL" (If bad score)
+
                 if let score = product.nutriscore_grade?.lowercased(), ["d", "e"].contains(score) {
                     
                     VStack(alignment: .leading, spacing: 15) {
@@ -89,7 +87,7 @@ struct SuccessView: View {
                             .foregroundStyle(.red)
                             .padding(.horizontal)
                         
-                        // STEP 1: EDUCATE
+
                         ProtocolCard(
                             icon: "play.circle.fill",
                             color: .red,
@@ -102,7 +100,7 @@ struct SuccessView: View {
                             }
                         )
                         
-                        // STEP 2: SWAP
+
                         ProtocolCard(
                             icon: "cart.fill",
                             color: .appleGreen,
@@ -115,7 +113,7 @@ struct SuccessView: View {
                             }
                         )
                         
-                        // STEP 3: BURN
+
                         ProtocolCard(
                             icon: "flame.fill",
                             color: .appleCyan,
@@ -130,10 +128,10 @@ struct SuccessView: View {
                         )
                     }
                 } else {
-                    // Safe Food - Show normal Macros
+
                     VStack(alignment: .leading) {
                         Text("Macros").font(.headline).foregroundStyle(.white)
-                        // FIXED: MacroBar is now defined below
+
                         VStack(spacing: 12) {
                             MacroBar(label: "Protein", value: product.nutriments?.proteins_100g ?? 0, color: Color.applePink)
                             MacroBar(label: "Carbs", value: product.nutriments?.carbohydrates_100g ?? 0, color: Color.appleGreen)
@@ -146,7 +144,7 @@ struct SuccessView: View {
                     .padding(.horizontal)
                 }
                 
-                // SAVE BUTTON
+
                 Button(action: saveToHistory) {
                     Text("Add to Summary")
                         .bold()
@@ -171,7 +169,7 @@ struct SuccessView: View {
     }
 }
 
-// Helper Card for the Protocol
+
 struct ProtocolCard: View {
     let icon: String
     let color: Color
@@ -201,7 +199,7 @@ struct ProtocolCard: View {
     }
 }
 
-// FIXED: Added MacroBar struct
+
 struct MacroBar: View {
     let label: String
     let value: Double

@@ -1,17 +1,11 @@
 import SwiftUI
 
-// MARK: - APPLE FITNESS AESTHETIC
-extension Color {
-    // Backgrounds
-    static let fitnessBlack = Color.black
-    static let fitnessCard = Color(UIColor.systemGray6) // The standard Dark Mode card color
-    
-    // The Iconic Ring Colors
+
     static let applePink = Color(hex: "FA114F")  // Move Ring
     static let appleGreen = Color(hex: "A4FF00") // Exercise Ring
     static let appleCyan = Color(hex: "00F5EA")  // Stand Ring
     
-    // Helper for Hex
+
     init(hex: String) {
         let hex = hex.trimmingCharacters(in: CharacterSet.alphanumerics.inverted)
         var int: UInt64 = 0
@@ -27,8 +21,7 @@ extension Color {
     }
 }
 
-// MARK: - TYPOGRAPHY MODIFIERS
-// Apple uses "Rounded" font for data/numbers in Fitness
+
 struct FitnessFont: ViewModifier {
     var size: CGFloat
     var weight: Font.Weight
@@ -44,11 +37,11 @@ extension View {
         modifier(FitnessFont(size: size, weight: weight))
     }
     
-    // Standard Card Style
+
     func fitnessCardStyle() -> some View {
         self
             .padding()
-            .background(Color(UIColor.secondarySystemBackground)) // Standard iOS Dark Gray
+            .background(Color(UIColor.secondarySystemBackground))
             .cornerRadius(16)
     }
 }

@@ -17,7 +17,7 @@ struct Product: Codable, Identifiable {
     let ingredients_text: String?
     let nutriments: Nutriments?
     
-    // NEW: We need this to know if it's a soda, chip, or chocolate
+
     let categories_tags: [String]?
     
     var cleanName: String {
@@ -42,7 +42,7 @@ struct Nutriments: Codable {
     let carbohydrates_100g: Double?
     let fat_100g: Double?
     let sugars_100g: Double?
-    let fiber_100g: Double? // NEW: Added for Glucose Logic
+    let fiber_100g: Double?
     let salt_100g: Double?
     
     enum CodingKeys: String, CodingKey {

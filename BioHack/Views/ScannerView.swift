@@ -14,7 +14,7 @@ struct ScannerView: UIViewControllerRepresentable {
     func updateUIViewController(_ uiViewController: ScannerViewController, context: Context) {}
 }
 
-// The actual UIKit Camera Controller
+
 class ScannerViewController: UIViewController {
     
     var viewModel: ScannerViewModel?
@@ -48,7 +48,6 @@ class ScannerViewController: UIViewController {
             captureSession.addOutput(metadataOutput)
             
             metadataOutput.setMetadataObjectsDelegate(viewModel, queue: DispatchQueue.main)
-            // Detect common food barcode types
             metadataOutput.metadataObjectTypes = [.ean8, .ean13, .pdf417, .upce]
         } else {
             return
@@ -59,7 +58,7 @@ class ScannerViewController: UIViewController {
         previewLayer.videoGravity = .resizeAspectFill
         view.layer.addSublayer(previewLayer)
         
-        // Start the camera on a background thread (Important for performance!)
+
         DispatchQueue.global(qos: .background).async {
             self.captureSession.startRunning()
         }
@@ -67,7 +66,7 @@ class ScannerViewController: UIViewController {
     
     override func viewDidLayoutSubviews() {
         super.viewDidLayoutSubviews()
-        // Ensure the camera layer fills the screen if the phone rotates
+
         if let previewLayer = previewLayer {
             previewLayer.frame = view.bounds
         }

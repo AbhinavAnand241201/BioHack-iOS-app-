@@ -3,19 +3,19 @@ import SwiftData
 
 struct HistoryView: View {
     @Query(sort: \SavedItem.dateScanned, order: .reverse) var items: [SavedItem]
-    @State private var selectedItem: SavedItem? // Control the history sheet
+    @State private var selectedItem: SavedItem?
     
     var body: some View {
         NavigationView {
             List {
                 Section(header: Text("Today").font(.headline)) {
                     ForEach(items) { item in
-                        // Navigation Link wrapper for interactivity
+
                         Button(action: {
                             selectedItem = item
                         }) {
                             HStack(spacing: 15) {
-                                // Ring Icon Badge
+
                                 ZStack {
                                     Circle()
                                         .stroke(Color.applePink, lineWidth: 3)
@@ -43,19 +43,19 @@ struct HistoryView: View {
                                     .foregroundStyle(.gray)
                             }
                             .padding(.vertical, 4)
-                            .contentShape(Rectangle()) // Make full row tappable
+                            .contentShape(Rectangle())
                         }
-                        .buttonStyle(.plain) // Remove default button flash
+                        .buttonStyle(.plain)
                         .listRowBackground(Color(UIColor.secondarySystemBackground))
                     }
                 }
             }
-            .listStyle(.insetGrouped) // The specific Apple Settings look
+            .listStyle(.insetGrouped)
             .navigationTitle("History")
-            .background(Color.black) // Force black background behind the list
-            .scrollContentBackground(.hidden) // Hides default grey background
+            .background(Color.black)
+            .scrollContentBackground(.hidden)
             .sheet(item: $selectedItem) { item in
-                // We pass a dummy VM because the View expects it, but we provide static product
+
                 ProductDetailView(viewModel: ProductViewModel(), staticProduct: item.decodedProduct)
                     .presentationDragIndicator(.visible)
             }

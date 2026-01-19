@@ -40,14 +40,25 @@ struct DashboardView: View {
                                     .foregroundStyle(.white)
                             }
                             Spacer()
-                            Circle()
-                                .fill(Color(UIColor.systemGray5))
-                                .frame(width: 36, height: 36)
-                                .overlay(
-                                    Image(systemName: "person.fill")
-                                        .font(.caption)
-                                        .foregroundStyle(.gray)
-                                )
+                            Menu {
+                                Button(role: .destructive) {
+                                    // LOG OUT LOGIC
+                                    UserDefaults.standard.set("", forKey: "userId")
+                                    // Force app restart (dirty but works for MVP) or use Binding to root
+                                    exit(0) 
+                                } label: {
+                                    Label("Sign Out", systemImage: "rectangle.portrait.and.arrow.right")
+                                }
+                            } label: {
+                                Circle()
+                                    .fill(Color(UIColor.systemGray5))
+                                    .frame(width: 36, height: 36)
+                                    .overlay(
+                                        Image(systemName: "person.fill")
+                                            .font(.caption)
+                                            .foregroundStyle(.gray)
+                                    )
+                            }
                         }
                         .padding(.horizontal)
                         .padding(.top, 10)

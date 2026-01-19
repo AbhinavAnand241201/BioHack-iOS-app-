@@ -3,11 +3,23 @@ import SwiftData
 
 @main
 struct BioHackApp: App {
+
+    @AppStorage("userId") var userId: String = ""
+    @State private var isAuthenticated: Bool = false
+    
     var body: some Scene {
         WindowGroup {
-            ContentView()
+            Group {
+                if isAuthenticated || !userId.isEmpty {
+
+                    ContentView()
+                        .transition(.opacity)
+                } else {
+
+                    LoginView(isAuthenticated: $isAuthenticated)
+                }
+            }
         }
-        // This one line sets up the entire database!
         .modelContainer(for: SavedItem.self)
     }
 }

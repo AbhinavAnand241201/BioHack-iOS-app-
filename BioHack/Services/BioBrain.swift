@@ -3,7 +3,7 @@ import UIKit
 
 struct BioBrain {
     
-    // MARK: - THE "JOURNEY" DATA MODEL
+
     struct HealthJourney {
         let warningTitle: String
         let educationQuery: String // For YouTube
@@ -11,12 +11,12 @@ struct BioBrain {
         let workoutType: ActivityType
     }
     
-    // MARK: - 1. THE PROTOCOL GENERATOR
+
     static func generateJourney(for product: Product) -> HealthJourney {
         let name = product.cleanName
         let tags = product.categories_tags ?? []
         
-        // Default Protocol
+
         var journey = HealthJourney(
             warningTitle: "Low Nutrition Detected",
             educationQuery: "Is \(name) healthy?",
@@ -24,8 +24,7 @@ struct BioBrain {
             workoutType: .walking
         )
         
-        // SMART DETECTION
-        // 1. Sugary Drinks
+
         if tags.contains(where: { $0.contains("beverages") || $0.contains("sodas") }) {
             journey = HealthJourney(
                 warningTitle: "Sugar Spike Alert",
@@ -34,7 +33,7 @@ struct BioBrain {
                 workoutType: .hiit // Needs intense burn
             )
         }
-        // 2. Chips / Salty
+
         else if tags.contains(where: { $0.contains("chips") || $0.contains("crisps") }) {
             journey = HealthJourney(
                 warningTitle: "High Sodium Alert",
@@ -43,7 +42,7 @@ struct BioBrain {
                 workoutType: .running
             )
         }
-        // 3. Chocolates / Sweets
+
         else if tags.contains(where: { $0.contains("chocolates") || $0.contains("sugary-snacks") }) {
             journey = HealthJourney(
                 warningTitle: "Insulin Spike Alert",
@@ -56,7 +55,7 @@ struct BioBrain {
         return journey
     }
     
-    // MARK: - 2. LINKS
+
     static func getYouTubeLink(query: String) -> URL? {
         let encoded = query.addingPercentEncoding(withAllowedCharacters: .urlQueryAllowed) ?? ""
         return URL(string: "https://www.youtube.com/results?search_query=\(encoded)")
@@ -67,7 +66,7 @@ struct BioBrain {
         return URL(string: "https://www.amazon.com/s?k=\(encoded)")
     }
     
-    // FIXED: Added this function back
+
     static func getYouTubeWorkoutLink(minutes: Int, type: ActivityType) -> URL? {
         let typeString: String
         switch type {
@@ -79,7 +78,7 @@ struct BioBrain {
         return getYouTubeLink(query: query)
     }
     
-    // MARK: - 3. CALORIE MATH
+
     static func calculateBurnTime(calories: Double, activity: ActivityType) -> Int {
         let burnRate: Double
         switch activity {

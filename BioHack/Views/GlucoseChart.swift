@@ -17,12 +17,12 @@ struct GlucoseChart: View {
             
             Chart {
                 ForEach(dataPoints) { point in
-                    // The Line
+
                     LineMark(
                         x: .value("Time", point.time),
                         y: .value("Level", point.level)
                     )
-                    .interpolationMethod(.catmullRom) // Makes it smooth/curvy
+                    .interpolationMethod(.catmullRom)
                     .foregroundStyle(
                         LinearGradient(
                             colors: [Color.applePink, Color.appleCyan],
@@ -32,7 +32,7 @@ struct GlucoseChart: View {
                     )
                     .lineStyle(StrokeStyle(lineWidth: 3))
                     
-                    // The Area (Glow effect under the line)
+
                     AreaMark(
                         x: .value("Time", point.time),
                         y: .value("Level", point.level)
@@ -47,15 +47,15 @@ struct GlucoseChart: View {
                     )
                 }
                 
-                // Add a RuleMark for Baseline (100)
+
                 RuleMark(y: .value("Baseline", 100))
                     .lineStyle(StrokeStyle(lineWidth: 1, dash: [5]))
                     .foregroundStyle(.gray.opacity(0.5))
             }
             .frame(height: 150)
-            .chartYAxis(.hidden) // Minimalist look
+            .chartYAxis(.hidden)
             
-            // Insight Text
+
             HStack {
                 Image(systemName: "brain.head.profile")
                     .foregroundStyle(Color.appleCyan)
